@@ -3,6 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import { Router } from '@angular/router';
 import {Location, LocationStrategy} from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import {Md5} from 'ts-md5';
 
 @Component({
   selector: 'app-pid-db',
@@ -21,18 +22,26 @@ export class PidDBComponent {
     location:any = null;
     key:any = null;
     url:any = null;
+    arr:any = null;
     public constructor(private http: HttpClient,private route: ActivatedRoute, private router: Router, private _location: Location, private locationStrategy: LocationStrategy){
         
         this.route.queryParams.subscribe(params => {
-            this.name = params["name"];
-            this.time = params["time"];
-            this.number = params["number"];
-            this.status = params["status"];
-            this.breed = params["breed"];
-            this.longtitude = params["longtitude"];
-            this.langtitude = params["langtitude"];
-            this.location = params["location"];
             this.key = params["key"];
+            this.url = "https://272.selfip.net/apps/tulvuEsSjP/collections/pigs/documents/"
+            this.url += this.key
+            this.url += '/'
+            this.http.get(this.url).subscribe((res) => {
+                this.arr = res;
+                this.time = this.arr["data"]["time"]
+                this.name = this.arr["data"]["name"]
+                this.status = this.arr["data"]["status"]
+                this.breed = this.arr["data"]["breed"]
+                this.longtitude = this.arr["data"]["longtitude"]
+                this.langtitude = this.arr["data"]["langtitude"]
+                this.location = this.arr["data"]["location"]
+                this.number = this.arr["data"]["number"]
+            }); 
+            
             this.displayContent();
         });
     }
@@ -48,7 +57,6 @@ export class PidDBComponent {
     }
 
     goBack(){
-        this._location.back()
         this.router.navigate(['/'])
             .then(() => {
             window.location.reload();
@@ -60,21 +68,26 @@ export class PidDBComponent {
           history.pushState(null, 'null', location.href);
         })
     }
+
     changeStatus(){
         // check for password
-        let valid = false;
-        if(valid){
+        
+        let validHash = Md5.hashStr("OINK!!");
+        let validPassword = false;
+        let person = prompt("Please enter your password:", "");
+        if(person!=null){
+            let hash = Md5.hashStr(person);
+            if(hash==validHash){
+                validPassword = true;
+            }
+        }
+
+        if(validPassword){
             if(this.status=="READY FOR PICKUP")
                 this.status = "RETRIEVED"
             else if(this.status =="RETRIEVED")
                 this.status = "READY FOR PICKUP"
-            let url = "https://272.selfip.net/apps/tulvuEsSjP/collections/pigs/documents/"
-            url+=this.key;
-            url+='/'
-            let sub = {
-                status: this.status
-            }
-            this.url = url;
+    
             this.updateData();
         }else{
             alert("INVALID PASSWORD");
