@@ -1,0 +1,23 @@
+<table class="table" id="mainTable">
+    <tr>
+        <th scope="col">Location</th>
+        <th scope="col">Reported By</th>
+        <th scope="col">Time Reported</th>
+        <th scope="col">Status</th>
+        <th scope="col">Display Info</th>
+        <th scope="col"></th>
+    </tr>
+    <tr *ngFor="let x of array" id="{{x.key}}">
+        
+        <td class="{{x.key}}" scope="col">{{x.data.location}}</td>
+        <td class="{{x.key}}" scope="col">{{x.data.name}}</td>
+        <td class="{{x.key}}" scope="col">{{x.data.time}}</td>
+        <td class="{{x.key}}" scope="col">{{x.data.status}}</td>
+        <td class="{{x.key}}" scope="col"><button (click)="displayInfo(x)">MORE INFO</button></td>
+        <td class="{{x.key}}" scope="col"><button id="deleteBtn" (click)="deletePig(x)">DELETE</button></td>
+    </tr>
+</table>
+
+<button id="addBtn" (click)="ShowAddPigForm()">{{title}}</button>
+
+

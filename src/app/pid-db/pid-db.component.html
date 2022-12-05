@@ -1,0 +1,21 @@
+<div id="popup">
+    <table class="table" onload="displayContent()">
+        <tr>
+            <th>Name: {{name}}</th>
+            <th>Time: {{time}}</th>
+        </tr>
+        <tr>
+            <th>Number: {{number}}</th>
+            <th><button id="statusBtn" (click)="changeStatus()">{{status}}</button></th>
+        </tr>
+        <tr>
+            <th>Breed: {{breed}}</th>
+            <th>location: {{location}}</th>
+        </tr>
+        <tr>
+            <th>langtitude: {{langtitude}}</th>
+            <th>longtitude: {{longtitude}}</th>
+        </tr>
+    </table>
+    <button (click)="goBack()">GO BACK</button>
+</div>
